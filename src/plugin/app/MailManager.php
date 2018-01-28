@@ -21,7 +21,7 @@ class MailManager
 		self::init();
 		$valid = self::validateData($data);
 		if ($valid['status']) {
-			return self::callUrl('send', $data);
+			return self::callUrl('send', $data, 'post');
 		} else {
 			return $valid['message'];
 		}
@@ -30,6 +30,7 @@ class MailManager
 	private static function callUrl($url='', $data=array(), $method='get')
 	{
 		$url = self::$api_url.$url;
+		$data['app_key'] = self::$app_key;
 		if (strtolower($method) == 'get') {
 			$url .= '?' . http_build_query($data);
 		}
