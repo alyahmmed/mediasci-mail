@@ -25,8 +25,8 @@ $ php artisan vendor:publish --provider=Alyahmmed\MediasciMail\MailServiceProvid
 $data = array(
     'subject' => 'test mail',
     'body' => '<h1>Hello</h1>',
-    'from' => 'info@media-sci.com',
-    'to' => 'ali.ahmed@media-sci.com',
+    'from' => 'from@domain.com',
+    'to' => 'to@domain.com',
 );
 \Alyahmmed\MediasciMail\MailManager::send($data);
 ```
