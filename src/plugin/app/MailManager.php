@@ -10,15 +10,20 @@ class MailManager
 	static $api_url;
 	static $app_key;
 	
-	private static function init()
+	private static function init($data=array())
 	{
-		self::$api_url = \Config::get('mailapp.api_url');
-		self::$app_key = \Config::get('mailapp.app_key');
+		if (class_exists('Config')) {
+			self::$api_url = \Config::get('mailapp.api_url');
+			self::$app_key = \Config::get('mailapp.app_key');
+		} else {
+			self::$api_url = isset($data['api_url']) ? $data['api_url'] : '';
+			self::$app_key = isset($data['app_key']) ? $data['app_key'] : '';
+		}
 	}
 
 	public static function send($data)
 	{
-		self::init();
+		self::init($data);
 		$valid = self::validateData($data);
 		if ($valid['status']) {
 			return self::callUrl('send', $data, 'post');
@@ -29,6 +34,9 @@ class MailManager
 
 	private static function callUrl($url='', $data=array(), $method='get')
 	{
+		if (! self::$api_url) {
+			return false;
+		}
 		$url = self::$api_url.$url;
 		$data['app_key'] = self::$app_key;
 		if (strtolower($method) == 'get') {
